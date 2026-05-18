@@ -24,10 +24,10 @@ pipeline {
         stage('Build Images') {
             steps {
                 sh '''
-                    docker build -t $REGISTRY/api-gateway:$IMAGE_TAG api-gateway
-                    docker build -t $REGISTRY/config-server:$IMAGE_TAG config-server
-                    docker build -t $REGISTRY/customers-service:$IMAGE_TAG customers-service
-                    docker build -t $REGISTRY/discovery-server:$IMAGE_TAG discovery-server
+                    docker build -t $REGISTRY/api-gateway:$IMAGE_TAG spring-petclinic-api-gateway
+                    docker build -t $REGISTRY/config-server:$IMAGE_TAG spring-petclinic-config-server
+                    docker build -t $REGISTRY/customers-service:$IMAGE_TAG spring-petclinic-customers-service
+                    docker build -t $REGISTRY/discovery-server:$IMAGE_TAG spring-petclinic-discovery-server
                 '''
             }
         }
