@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        REGISTRY = "docker.io/YOUR_USERNAME"
+        REGISTRY = "docker.io/reemnabil"
         IMAGE_TAG = "${BUILD_NUMBER}"
         NAMESPACE = "petclinic"
     }
