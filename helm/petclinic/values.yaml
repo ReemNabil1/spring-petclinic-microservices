@@ -1,0 +1,53 @@
+namespace: petclinic
+
+replicaCount: 1
+
+services:
+
+  api-gateway:
+    image: springcommunity/spring-petclinic-api-gateway:latest
+    port: 8080
+
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 1Gi
+
+  config-server:
+    image: springcommunity/spring-petclinic-config-server:latest
+    port: 8888
+
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 1Gi
+
+  discovery-server:
+    image: springcommunity/spring-petclinic-discovery-server:latest
+    port: 8761
+
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 1Gi
+
+  customers-service:
+    image: springcommunity/spring-petclinic-customers-service:latest
+    port: 8081
+
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 300m
+        memory: 512Mi

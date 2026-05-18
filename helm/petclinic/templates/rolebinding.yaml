@@ -1,0 +1,18 @@
+{{- range $name, $svc := .Values.services }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $name }}-binding
+  namespace: {{ $.Values.namespace }}
+
+subjects:
+  - kind: ServiceAccount
+    name: {{ $name }}-sa
+    namespace: {{ $.Values.namespace }}
+
+roleRef:
+  kind: Role
+  name: petclinic-role
+  apiGroup: rbac.authorization.k8s.io
+---
+{{- end }}

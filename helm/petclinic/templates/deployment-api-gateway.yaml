@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+  labels:
+    app: api-gateway
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: api-gateway
+
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+
+    spec:
+      serviceAccountName: api-gateway-sa   
+      containers:
+        - name: api-gateway
+          image: {{ index .Values.services "api-gateway" "image" }}
+          imagePullPolicy: Always
+
+          ports:
+            - containerPort: 8080
+
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: docker
+
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: http://discovery-server:8761/eureka
+
+            - name: SPRING_CONFIG_IMPORT
+              value: optional:configserver:http://config-server:8888
+
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 25
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 15
+
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "300m"

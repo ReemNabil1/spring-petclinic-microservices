@@ -1,0 +1,574 @@
+apiVersion: v1
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "2"
+      image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"admin-server:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"admin-server\")].image"}]'
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: "2026-05-15T10:02:46Z"
+    generation: 2
+    labels:
+      app: admin-server
+      app.kubernetes.io/component: admin-server
+      app.kubernetes.io/instance: admin-server
+    name: admin-server
+    namespace: petclinic-dev
+    resourceVersion: "70225"
+    uid: 5c875924-6918-4837-8b6e-861f3d5153be
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        deployment: admin-server
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        labels:
+          deployment: admin-server
+      spec:
+        containers:
+        - image: springcommunity/spring-petclinic-admin-server@sha256:df1870fde771f462ad9b26e4117b39e801d52157a13b2944bc3b0e3f7ffe7fdf
+          imagePullPolicy: IfNotPresent
+          name: admin-server
+          ports:
+          - containerPort: 9090
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-05-15T10:03:25Z"
+      lastUpdateTime: "2026-05-15T10:03:25Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2026-05-15T10:02:46Z"
+      lastUpdateTime: "2026-05-15T10:03:25Z"
+      message: ReplicaSet "admin-server-864b674b77" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "10"
+      image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"api-gateway:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"api-gateway\")].image"}]'
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: "2026-05-15T10:02:41Z"
+    generation: 10
+    labels:
+      app: api-gateway
+      app.kubernetes.io/component: api-gateway
+      app.kubernetes.io/instance: api-gateway
+    name: api-gateway
+    namespace: petclinic-dev
+    resourceVersion: "73515"
+    uid: 521a4e37-bd8f-48a4-b83a-07d72cca8b06
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        deployment: api-gateway
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2026-05-15T13:34:05+03:00"
+          openshift.io/generated-by: OpenShiftNewApp
+        labels:
+          deployment: api-gateway
+      spec:
+        containers:
+        - env:
+          - name: SPRING_CONFIG_IMPORT
+            value: configserver:http://config-server:8888
+          - name: SPRING_ZIPKIN_ENABLED
+            value: "false"
+          - name: MANAGEMENT_TRACING_ENABLED
+            value: "false"
+          image: springcommunity/spring-petclinic-api-gateway@sha256:168f973b5ef1a262b93007674ad2aaa77368591ccdcfedb128df209f86a08d1b
+          imagePullPolicy: IfNotPresent
+          name: api-gateway
+          ports:
+          - containerPort: 8081
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-05-15T10:03:18Z"
+      lastUpdateTime: "2026-05-15T10:03:18Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2026-05-15T10:02:41Z"
+      lastUpdateTime: "2026-05-15T10:34:06Z"
+      message: ReplicaSet "api-gateway-5b67d55f86" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 10
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "2"
+      image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"config-server:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"config-server\")].image"}]'
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: "2026-05-15T09:58:40Z"
+    generation: 2
+    labels:
+      app: config-server
+      app.kubernetes.io/component: config-server
+      app.kubernetes.io/instance: config-server
+    name: config-server
+    namespace: petclinic-dev
+    resourceVersion: "69544"
+    uid: 18e53c0f-81cf-40b4-b074-e69f7d094a60
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        deployment: config-server
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        labels:
+          deployment: config-server
+      spec:
+        containers:
+        - image: springcommunity/spring-petclinic-config-server@sha256:8fbaec1c4ca6ed032ec04ed954ed493ce82e2aed6a726e1c5cbdf4d928e8b296
+          imagePullPolicy: IfNotPresent
+          name: config-server
+          ports:
+          - containerPort: 8888
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-05-15T09:58:55Z"
+      lastUpdateTime: "2026-05-15T09:58:55Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2026-05-15T09:58:40Z"
+      lastUpdateTime: "2026-05-15T09:58:55Z"
+      message: ReplicaSet "config-server-5b79bbb9b7" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "3"
+      image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"discovery-server:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"discovery-server\")].image"}]'
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: "2026-05-15T09:56:22Z"
+    generation: 3
+    labels:
+      app: discovery-server
+      app.kubernetes.io/component: discovery-server
+      app.kubernetes.io/instance: discovery-server
+    name: discovery-server
+    namespace: petclinic-dev
+    resourceVersion: "69626"
+    uid: a4dbca99-ba30-4c7e-b7d6-312b2da63b72
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        deployment: discovery-server
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2026-05-15T12:59:11+03:00"
+          openshift.io/generated-by: OpenShiftNewApp
+        labels:
+          deployment: discovery-server
+      spec:
+        containers:
+        - image: springcommunity/spring-petclinic-discovery-server@sha256:d9b6fdff717a45c332c7ed4ad661921f7ff70745fdcc40499d26f199d4da0d0a
+          imagePullPolicy: IfNotPresent
+          name: discovery-server
+          ports:
+          - containerPort: 8761
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-05-15T09:59:11Z"
+      lastUpdateTime: "2026-05-15T09:59:11Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2026-05-15T09:56:22Z"
+      lastUpdateTime: "2026-05-15T09:59:11Z"
+      message: ReplicaSet "discovery-server-9c5df765d" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 3
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "3"
+      image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"spring-petclinic-customers-service:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"spring-petclinic-customers-service\")].image"}]'
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: "2026-05-15T01:10:52Z"
+    generation: 3
+    labels:
+      app: spring-petclinic-customers-service
+      app.kubernetes.io/component: spring-petclinic-customers-service
+      app.kubernetes.io/instance: spring-petclinic-customers-service
+    name: spring-petclinic-customers-service
+    namespace: petclinic-dev
+    resourceVersion: "99922"
+    uid: 4944aec9-7f5e-4a65-a12d-796e93dce84e
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        deployment: spring-petclinic-customers-service
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2026-05-15T20:50:13+03:00"
+          openshift.io/generated-by: OpenShiftNewApp
+        labels:
+          deployment: spring-petclinic-customers-service
+      spec:
+        containers:
+        - image: springcommunity/spring-petclinic-customers-service@sha256:c7bc575a40cc2f796a85174fc3c2e7518d1e6177a38cb2945a66a1ac26371899
+          imagePullPolicy: IfNotPresent
+          name: spring-petclinic-customers-service
+          ports:
+          - containerPort: 8081
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-05-15T13:37:12Z"
+      lastUpdateTime: "2026-05-15T13:37:12Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2026-05-15T01:10:52Z"
+      lastUpdateTime: "2026-05-15T17:54:52Z"
+      message: ReplicaSet "spring-petclinic-customers-service-576549cbd7" has successfully
+        progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 3
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "2"
+      image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"vets-service:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"vets-service\")].image"}]'
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: "2026-05-15T09:59:56Z"
+    generation: 2
+    labels:
+      app: vets-service
+      app.kubernetes.io/component: vets-service
+      app.kubernetes.io/instance: vets-service
+    name: vets-service
+    namespace: petclinic-dev
+    resourceVersion: "69850"
+    uid: 2f6d9815-4cb4-47e6-974c-f6f226a5d692
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        deployment: vets-service
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        labels:
+          deployment: vets-service
+      spec:
+        containers:
+        - image: springcommunity/spring-petclinic-vets-service@sha256:e5ee69f0c49f7108dbf2b1f7200b6c55aaa8fc1f7fb5f4485f627fff7d134d2b
+          imagePullPolicy: IfNotPresent
+          name: vets-service
+          ports:
+          - containerPort: 8081
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-05-15T10:00:28Z"
+      lastUpdateTime: "2026-05-15T10:00:28Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2026-05-15T09:59:56Z"
+      lastUpdateTime: "2026-05-15T10:00:28Z"
+      message: ReplicaSet "vets-service-56845f8494" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "2"
+      image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"visits-service:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"visits-service\")].image"}]'
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: "2026-05-15T10:00:12Z"
+    generation: 2
+    labels:
+      app: visits-service
+      app.kubernetes.io/component: visits-service
+      app.kubernetes.io/instance: visits-service
+    name: visits-service
+    namespace: petclinic-dev
+    resourceVersion: "69969"
+    uid: 42a1ba6d-39eb-48b9-b611-4a36773f1d67
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        deployment: visits-service
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        labels:
+          deployment: visits-service
+      spec:
+        containers:
+        - image: springcommunity/spring-petclinic-visits-service@sha256:e4b3e70d016d85e98430f9d903095efa205af467bb3646d4ad7e25b324c7e716
+          imagePullPolicy: IfNotPresent
+          name: visits-service
+          ports:
+          - containerPort: 9090
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-05-15T10:01:50Z"
+      lastUpdateTime: "2026-05-15T10:01:50Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2026-05-15T10:00:12Z"
+      lastUpdateTime: "2026-05-15T10:01:50Z"
+      message: ReplicaSet "visits-service-6967458db7" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "2"
+      image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"zipkin:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"zipkin\")].image"}]'
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: "2026-05-15T10:14:03Z"
+    generation: 3
+    labels:
+      app: zipkin
+      app.kubernetes.io/component: zipkin
+      app.kubernetes.io/instance: zipkin
+    name: zipkin
+    namespace: petclinic-dev
+    resourceVersion: "99571"
+    uid: af1b8e40-01dd-41e1-8d11-de79cb3c22ec
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 0
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        deployment: zipkin
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        labels:
+          deployment: zipkin
+      spec:
+        containers:
+        - image: openzipkin/zipkin@sha256:0bbe694e5fb0b562ec7903d20273a18b1c62a05dcd3ee40c4f3b8a3f715a6e65
+          imagePullPolicy: IfNotPresent
+          name: zipkin
+          ports:
+          - containerPort: 9410
+            protocol: TCP
+          - containerPort: 9411
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    conditions:
+    - lastTransitionTime: "2026-05-15T10:14:03Z"
+      lastUpdateTime: "2026-05-15T10:14:36Z"
+      message: ReplicaSet "zipkin-55697659d4" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2026-05-15T17:51:26Z"
+      lastUpdateTime: "2026-05-15T17:51:26Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 3
+kind: List
+metadata:
+  resourceVersion: ""

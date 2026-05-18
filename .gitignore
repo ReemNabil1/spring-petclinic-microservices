@@ -21,3 +21,17 @@ target/
 generated/
 
 **/.DS_Store
+
+# IDE
+.vscode/
+
+# Kubernetes experiments
+metrics-server.yaml
+dev-backup.yaml
+clean-api.yaml
+staging.yaml
+simple-k8s/
+
+# OS
+.DS_Store
+Thumbs.db

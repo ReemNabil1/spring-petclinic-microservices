@@ -1,0 +1,11 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: api-gateway
+  namespace: {{ .Values.namespace }}
+spec:
+  to:
+    kind: Service
+    name: api-gateway
+  port:
+    targetPort: 8080
