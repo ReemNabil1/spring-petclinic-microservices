@@ -10,39 +10,19 @@ services:
 
     resources:
       requests:
-        cpu: 200m
-        memory: 512Mi
+        cpu: 50m
+        memory: 128Mi
       limits:
-        cpu: 500m
-        memory: 1Gi
+        cpu: 200m
+        memory: 256Mi
 
   config-server:
     image: springcommunity/spring-petclinic-config-server:latest
     port: 8888
 
-    resources:
-      requests:
-        cpu: 200m
-        memory: 512Mi
-      limits:
-        cpu: 500m
-        memory: 1Gi
-
-  discovery-server:
-    image: springcommunity/spring-petclinic-discovery-server:latest
-    port: 8761
-
-    resources:
-      requests:
-        cpu: 200m
-        memory: 512Mi
-      limits:
-        cpu: 500m
-        memory: 1Gi
-
-  customers-service:
-    image: springcommunity/spring-petclinic-customers-service:latest
-    port: 8081
+    readinessProbe:
+      initialDelaySeconds: 30
+      periodSeconds: 5
 
     resources:
       requests:
@@ -51,3 +31,30 @@ services:
       limits:
         cpu: 300m
         memory: 512Mi
+
+  discovery-server:
+    image: springcommunity/spring-petclinic-discovery-server:latest
+    port: 8761
+
+    env:
+      SPRING_CLOUD_CONFIG_FAIL_FAST: "false"
+
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 300m
+        memory: 512Mi
+
+  customers-service:
+    image: springcommunity/spring-petclinic-customers-service:latest
+    port: 8081
+
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi

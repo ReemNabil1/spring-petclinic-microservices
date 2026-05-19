@@ -23,6 +23,24 @@ spec:
         ports:
         - containerPort: {{ $service.port }}
 
+        env:
+        - name: SPRING_CLOUD_CONFIG_FAIL_FAST
+          value: "false"
+
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: {{ $service.port }}
+          initialDelaySeconds: 60
+          periodSeconds: 10
+
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: {{ $service.port }}
+          initialDelaySeconds: 30
+          periodSeconds: 5
+
         resources:
           requests:
             memory: "256Mi"
@@ -32,5 +50,4 @@ spec:
             cpu: "300m"
 
 ---
-
 {{- end }}

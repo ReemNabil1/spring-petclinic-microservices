@@ -1,0 +1,1789 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      k8s.ovn.org/pod-networks: '{"default":{"ip_addresses":["10.217.0.80/23"],"mac_address":"0a:58:0a:d9:00:50","gateway_ips":["10.217.0.1"],"routes":[{"dest":"10.217.0.0/22","nextHop":"10.217.0.1"},{"dest":"10.217.4.0/23","nextHop":"10.217.0.1"},{"dest":"169.254.0.5/32","nextHop":"10.217.0.1"},{"dest":"100.64.0.0/16","nextHop":"10.217.0.1"}],"ip_address":"10.217.0.80/23","gateway_ip":"10.217.0.1","role":"primary"}}'
+      k8s.v1.cni.cncf.io/network-status: |-
+        [{
+            "name": "ovn-kubernetes",
+            "interface": "eth0",
+            "ips": [
+                "10.217.0.80"
+            ],
+            "mac": "0a:58:0a:d9:00:50",
+            "default": true,
+            "dns": {}
+        }]
+      openshift.io/scc: restricted-v2
+      seccomp.security.alpha.kubernetes.io/pod: runtime/default
+      security.openshift.io/validated-scc-subject-type: user
+    creationTimestamp: "2026-05-18T23:34:11Z"
+    generateName: api-gateway-d898dc5db-
+    generation: 1
+    labels:
+      app: api-gateway
+      pod-template-hash: d898dc5db
+    name: api-gateway-d898dc5db-mpg69
+    namespace: petclinic
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: api-gateway-d898dc5db
+      uid: c72b2e8e-7fce-4730-bd7f-0711aa3f13e9
+    resourceVersion: "82677"
+    uid: ee599f99-8147-4ea2-8fb5-11d92c0313e9
+  spec:
+    containers:
+    - env:
+      - name: SPRING_CLOUD_CONFIG_FAIL_FAST
+        value: "false"
+      image: springcommunity/spring-petclinic-api-gateway:latest
+      imagePullPolicy: Always
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /actuator/health
+          port: 8080
+          scheme: HTTP
+        initialDelaySeconds: 60
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      name: api-gateway
+      ports:
+      - containerPort: 8080
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /actuator/health
+          port: 8080
+          scheme: HTTP
+        initialDelaySeconds: 30
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources:
+        limits:
+          cpu: 300m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 256Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        runAsNonRoot: true
+        runAsUser: 1000660000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-9v226
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    imagePullSecrets:
+    - name: default-dockercfg-fqphq
+    nodeName: crc
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1000660000
+      seLinuxOptions:
+        level: s0:c26,c5
+      seccompProfile:
+        type: RuntimeDefault
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    volumes:
+    - name: kube-api-access-9v226
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+        - configMap:
+            items:
+            - key: service-ca.crt
+              path: service-ca.crt
+            name: openshift-service-ca.crt
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-05-19T08:31:31Z"
+      observedGeneration: 1
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-05-18T23:34:11Z"
+      observedGeneration: 1
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-05-19T08:33:00Z"
+      observedGeneration: 1
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-05-19T08:33:00Z"
+      observedGeneration: 1
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-05-18T23:34:11Z"
+      observedGeneration: 1
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - allocatedResources:
+        cpu: 100m
+        memory: 256Mi
+      containerID: cri-o://f42bcbeef7d844294bce3cc33a83e99c350ddd6c5a8992d9ec0d276260d8cd94
+      image: docker.io/springcommunity/spring-petclinic-api-gateway:latest
+      imageID: docker.io/springcommunity/spring-petclinic-api-gateway@sha256:168f973b5ef1a262b93007674ad2aaa77368591ccdcfedb128df209f86a08d1b
+      lastState:
+        terminated:
+          containerID: cri-o://c8d9de2c4e5858c0bbd562d94fba512e8dd05f9b3bfb34936b6241e2ac4ad0ea
+          exitCode: 1
+          finishedAt: "2026-05-19T08:31:50Z"
+          reason: Error
+          startedAt: "2026-05-19T08:31:44Z"
+      name: api-gateway
+      ready: true
+      resources:
+        limits:
+          cpu: 300m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 256Mi
+      restartCount: 5
+      started: true
+      state:
+        running:
+          startedAt: "2026-05-19T08:32:18Z"
+      user:
+        linux:
+          gid: 0
+          supplementalGroups:
+          - 0
+          - 1000660000
+          uid: 1000660000
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-9v226
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 192.168.126.11
+    hostIPs:
+    - ip: 192.168.126.11
+    observedGeneration: 1
+    phase: Running
+    podIP: 10.217.0.80
+    podIPs:
+    - ip: 10.217.0.80
+    qosClass: Burstable
+    startTime: "2026-05-18T23:34:11Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      k8s.ovn.org/pod-networks: '{"default":{"ip_addresses":["10.217.0.82/23"],"mac_address":"0a:58:0a:d9:00:52","gateway_ips":["10.217.0.1"],"routes":[{"dest":"10.217.0.0/22","nextHop":"10.217.0.1"},{"dest":"10.217.4.0/23","nextHop":"10.217.0.1"},{"dest":"169.254.0.5/32","nextHop":"10.217.0.1"},{"dest":"100.64.0.0/16","nextHop":"10.217.0.1"}],"ip_address":"10.217.0.82/23","gateway_ip":"10.217.0.1","role":"primary"}}'
+      k8s.v1.cni.cncf.io/network-status: |-
+        [{
+            "name": "ovn-kubernetes",
+            "interface": "eth0",
+            "ips": [
+                "10.217.0.82"
+            ],
+            "mac": "0a:58:0a:d9:00:52",
+            "default": true,
+            "dns": {}
+        }]
+      openshift.io/scc: restricted-v2
+      seccomp.security.alpha.kubernetes.io/pod: runtime/default
+      security.openshift.io/validated-scc-subject-type: user
+    creationTimestamp: "2026-05-18T23:34:11Z"
+    generateName: config-server-cb48cfc75-
+    generation: 1
+    labels:
+      app: config-server
+      pod-template-hash: cb48cfc75
+    name: config-server-cb48cfc75-6zbsf
+    namespace: petclinic
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: config-server-cb48cfc75
+      uid: abb83403-fbbe-4506-bb5a-a785a869eddb
+    resourceVersion: "82671"
+    uid: d0adf160-be8c-414d-98de-0ed5c6da1190
+  spec:
+    containers:
+    - env:
+      - name: SPRING_CLOUD_CONFIG_FAIL_FAST
+        value: "false"
+      image: springcommunity/spring-petclinic-config-server:latest
+      imagePullPolicy: Always
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /actuator/health
+          port: 8888
+          scheme: HTTP
+        initialDelaySeconds: 60
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      name: config-server
+      ports:
+      - containerPort: 8888
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /actuator/health
+          port: 8888
+          scheme: HTTP
+        initialDelaySeconds: 30
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources:
+        limits:
+          cpu: 300m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 256Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        runAsNonRoot: true
+        runAsUser: 1000660000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-657rj
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    imagePullSecrets:
+    - name: default-dockercfg-fqphq
+    nodeName: crc
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1000660000
+      seLinuxOptions:
+        level: s0:c26,c5
+      seccompProfile:
+        type: RuntimeDefault
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    volumes:
+    - name: kube-api-access-657rj
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+        - configMap:
+            items:
+            - key: service-ca.crt
+              path: service-ca.crt
+            name: openshift-service-ca.crt
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-05-19T08:31:26Z"
+      observedGeneration: 1
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-05-18T23:34:11Z"
+      observedGeneration: 1
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-05-19T08:33:00Z"
+      observedGeneration: 1
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-05-19T08:33:00Z"
+      observedGeneration: 1
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-05-18T23:34:11Z"
+      observedGeneration: 1
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - allocatedResources:
+        cpu: 100m
+        memory: 256Mi
+      containerID: cri-o://ef56908fd71962bb39948b2925f215d1b7e1f09819109d288545fbd6af9e0011
+      image: docker.io/springcommunity/spring-petclinic-config-server:latest
+      imageID: docker.io/springcommunity/spring-petclinic-config-server@sha256:8fbaec1c4ca6ed032ec04ed954ed493ce82e2aed6a726e1c5cbdf4d928e8b296
+      lastState: {}
+      name: config-server
+      ready: true
+      resources:
+        limits:
+          cpu: 300m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 256Mi
+      restartCount: 3
+      started: true
+      state:
+        running:
+          startedAt: "2026-05-19T08:31:26Z"
+      user:
+        linux:
+          gid: 0
+          supplementalGroups:
+          - 0
+          - 1000660000
+          uid: 1000660000
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-657rj
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 192.168.126.11
+    hostIPs:
+    - ip: 192.168.126.11
+    observedGeneration: 1
+    phase: Running
+    podIP: 10.217.0.82
+    podIPs:
+    - ip: 10.217.0.82
+    qosClass: Burstable
+    startTime: "2026-05-18T23:34:11Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      k8s.ovn.org/pod-networks: '{"default":{"ip_addresses":["10.217.0.79/23"],"mac_address":"0a:58:0a:d9:00:4f","gateway_ips":["10.217.0.1"],"routes":[{"dest":"10.217.0.0/22","nextHop":"10.217.0.1"},{"dest":"10.217.4.0/23","nextHop":"10.217.0.1"},{"dest":"169.254.0.5/32","nextHop":"10.217.0.1"},{"dest":"100.64.0.0/16","nextHop":"10.217.0.1"}],"ip_address":"10.217.0.79/23","gateway_ip":"10.217.0.1","role":"primary"}}'
+      k8s.v1.cni.cncf.io/network-status: |-
+        [{
+            "name": "ovn-kubernetes",
+            "interface": "eth0",
+            "ips": [
+                "10.217.0.79"
+            ],
+            "mac": "0a:58:0a:d9:00:4f",
+            "default": true,
+            "dns": {}
+        }]
+      openshift.io/scc: restricted-v2
+      seccomp.security.alpha.kubernetes.io/pod: runtime/default
+      security.openshift.io/validated-scc-subject-type: user
+    creationTimestamp: "2026-05-18T23:34:11Z"
+    generateName: customers-service-6678d59695-
+    generation: 1
+    labels:
+      app: customers-service
+      pod-template-hash: 6678d59695
+    name: customers-service-6678d59695-926hr
+    namespace: petclinic
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: customers-service-6678d59695
+      uid: 70d5025e-b2c5-4b57-88a7-1443600f5c7c
+    resourceVersion: "82693"
+    uid: f5ceb624-9d48-41dc-b3d4-2a5797dc55d2
+  spec:
+    containers:
+    - env:
+      - name: SPRING_CLOUD_CONFIG_FAIL_FAST
+        value: "false"
+      image: springcommunity/spring-petclinic-customers-service:latest
+      imagePullPolicy: Always
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /actuator/health
+          port: 8081
+          scheme: HTTP
+        initialDelaySeconds: 60
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      name: customers-service
+      ports:
+      - containerPort: 8081
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /actuator/health
+          port: 8081
+          scheme: HTTP
+        initialDelaySeconds: 30
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources:
+        limits:
+          cpu: 300m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 256Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        runAsNonRoot: true
+        runAsUser: 1000660000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-9slpg
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    imagePullSecrets:
+    - name: default-dockercfg-fqphq
+    nodeName: crc
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1000660000
+      seLinuxOptions:
+        level: s0:c26,c5
+      seccompProfile:
+        type: RuntimeDefault
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    volumes:
+    - name: kube-api-access-9slpg
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+        - configMap:
+            items:
+            - key: service-ca.crt
+              path: service-ca.crt
+            name: openshift-service-ca.crt
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-05-19T08:31:26Z"
+      observedGeneration: 1
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-05-18T23:34:11Z"
+      observedGeneration: 1
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-05-19T08:33:07Z"
+      observedGeneration: 1
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-05-19T08:33:07Z"
+      observedGeneration: 1
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-05-18T23:34:11Z"
+      observedGeneration: 1
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - allocatedResources:
+        cpu: 100m
+        memory: 256Mi
+      containerID: cri-o://6eec4f0dedc02ae108eb4032c948d459d7ed5ef923ea3d4345d49593f8649a14
+      image: docker.io/springcommunity/spring-petclinic-customers-service:latest
+      imageID: docker.io/springcommunity/spring-petclinic-customers-service@sha256:ab1181fed9b1c23a74a442c1c1625f1ab34b4e0e928192cb5db77eef3f75b14a
+      lastState:
+        terminated:
+          containerID: cri-o://fa38ba7f6d0affc5305fba766b0c94a925bb159a0b518c2f2b584f5379380b45
+          exitCode: 1
+          finishedAt: "2026-05-19T08:31:47Z"
+          reason: Error
+          startedAt: "2026-05-19T08:31:40Z"
+      name: customers-service
+      ready: true
+      resources:
+        limits:
+          cpu: 300m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 256Mi
+      restartCount: 8
+      started: true
+      state:
+        running:
+          startedAt: "2026-05-19T08:32:15Z"
+      user:
+        linux:
+          gid: 0
+          supplementalGroups:
+          - 0
+          - 1000660000
+          uid: 1000660000
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-9slpg
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 192.168.126.11
+    hostIPs:
+    - ip: 192.168.126.11
+    observedGeneration: 1
+    phase: Running
+    podIP: 10.217.0.79
+    podIPs:
+    - ip: 10.217.0.79
+    qosClass: Burstable
+    startTime: "2026-05-18T23:34:11Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      k8s.ovn.org/pod-networks: '{"default":{"ip_addresses":["10.217.0.81/23"],"mac_address":"0a:58:0a:d9:00:51","gateway_ips":["10.217.0.1"],"routes":[{"dest":"10.217.0.0/22","nextHop":"10.217.0.1"},{"dest":"10.217.4.0/23","nextHop":"10.217.0.1"},{"dest":"169.254.0.5/32","nextHop":"10.217.0.1"},{"dest":"100.64.0.0/16","nextHop":"10.217.0.1"}],"ip_address":"10.217.0.81/23","gateway_ip":"10.217.0.1","role":"primary"}}'
+      k8s.v1.cni.cncf.io/network-status: |-
+        [{
+            "name": "ovn-kubernetes",
+            "interface": "eth0",
+            "ips": [
+                "10.217.0.81"
+            ],
+            "mac": "0a:58:0a:d9:00:51",
+            "default": true,
+            "dns": {}
+        }]
+      openshift.io/scc: restricted-v2
+      seccomp.security.alpha.kubernetes.io/pod: runtime/default
+      security.openshift.io/validated-scc-subject-type: user
+    creationTimestamp: "2026-05-18T23:34:11Z"
+    generateName: discovery-server-5475649867-
+    generation: 1
+    labels:
+      app: discovery-server
+      pod-template-hash: "5475649867"
+    name: discovery-server-5475649867-5wrg8
+    namespace: petclinic
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: discovery-server-5475649867
+      uid: 749dc70b-634a-45af-accb-fc75b5f19b5b
+    resourceVersion: "82634"
+    uid: 7e69c283-eab2-4e9c-9992-3e5f908e9fce
+  spec:
+    containers:
+    - env:
+      - name: SPRING_CLOUD_CONFIG_FAIL_FAST
+        value: "false"
+      image: springcommunity/spring-petclinic-discovery-server:latest
+      imagePullPolicy: Always
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /actuator/health
+          port: 8761
+          scheme: HTTP
+        initialDelaySeconds: 60
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 1
+      name: discovery-server
+      ports:
+      - containerPort: 8761
+        protocol: TCP
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /actuator/health
+          port: 8761
+          scheme: HTTP
+        initialDelaySeconds: 30
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources:
+        limits:
+          cpu: 300m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 256Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        runAsNonRoot: true
+        runAsUser: 1000660000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-qq4d7
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    imagePullSecrets:
+    - name: default-dockercfg-fqphq
+    nodeName: crc
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1000660000
+      seLinuxOptions:
+        level: s0:c26,c5
+      seccompProfile:
+        type: RuntimeDefault
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+    volumes:
+    - name: kube-api-access-qq4d7
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+        - configMap:
+            items:
+            - key: service-ca.crt
+              path: service-ca.crt
+            name: openshift-service-ca.crt
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-05-19T08:31:25Z"
+      observedGeneration: 1
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-05-18T23:34:11Z"
+      observedGeneration: 1
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-05-19T08:32:45Z"
+      observedGeneration: 1
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-05-19T08:32:45Z"
+      observedGeneration: 1
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-05-18T23:34:11Z"
+      observedGeneration: 1
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - allocatedResources:
+        cpu: 100m
+        memory: 256Mi
+      containerID: cri-o://bfd4623ad721756b7bd6fbe8bf81193e5a386773b706f7bfc39038f29184530f
+      image: docker.io/springcommunity/spring-petclinic-discovery-server:latest
+      imageID: docker.io/springcommunity/spring-petclinic-discovery-server@sha256:c3cb50137cf7f2f61ac7f3f878f93b79a3b71213360a0d4550a4f5ab4418c342
+      lastState:
+        terminated:
+          containerID: cri-o://893f9b700f01f1abf52ffb1c98c1fe1ef3cab5e9f843c322d3fc7ee8bea6db55
+          exitCode: 1
+          finishedAt: "2026-05-19T08:31:44Z"
+          reason: Error
+          startedAt: "2026-05-19T08:31:38Z"
+      name: discovery-server
+      ready: true
+      resources:
+        limits:
+          cpu: 300m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 256Mi
+      restartCount: 6
+      started: true
+      state:
+        running:
+          startedAt: "2026-05-19T08:32:08Z"
+      user:
+        linux:
+          gid: 0
+          supplementalGroups:
+          - 0
+          - 1000660000
+          uid: 1000660000
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-qq4d7
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 192.168.126.11
+    hostIPs:
+    - ip: 192.168.126.11
+    observedGeneration: 1
+    phase: Running
+    podIP: 10.217.0.81
+    podIPs:
+    - ip: 10.217.0.81
+    qosClass: Burstable
+    startTime: "2026-05-18T23:34:11Z"
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: petclinic
+      meta.helm.sh/release-namespace: petclinic
+    creationTimestamp: "2026-05-18T23:34:11Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    name: api-gateway
+    namespace: petclinic
+    resourceVersion: "76025"
+    uid: a5418eb0-ac44-4e5a-9128-1f9e6eee4192
+  spec:
+    clusterIP: 10.217.5.223
+    clusterIPs:
+    - 10.217.5.223
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: api-gateway
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: petclinic
+      meta.helm.sh/release-namespace: petclinic
+    creationTimestamp: "2026-05-18T23:34:11Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    name: config-server
+    namespace: petclinic
+    resourceVersion: "76021"
+    uid: d15fa4fc-c345-4082-ab2e-e9376b1dce8a
+  spec:
+    clusterIP: 10.217.4.219
+    clusterIPs:
+    - 10.217.4.219
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 8888
+      protocol: TCP
+      targetPort: 8888
+    selector:
+      app: config-server
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: petclinic
+      meta.helm.sh/release-namespace: petclinic
+    creationTimestamp: "2026-05-18T23:34:11Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    name: customers-service
+    namespace: petclinic
+    resourceVersion: "76035"
+    uid: db0d575d-5465-45ef-8bf6-3b0b430d9c84
+  spec:
+    clusterIP: 10.217.4.184
+    clusterIPs:
+    - 10.217.4.184
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 8081
+      protocol: TCP
+      targetPort: 8081
+    selector:
+      app: customers-service
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: petclinic
+      meta.helm.sh/release-namespace: petclinic
+    creationTimestamp: "2026-05-18T23:34:11Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    name: discovery-server
+    namespace: petclinic
+    resourceVersion: "76029"
+    uid: 79852e56-f952-44dc-a481-c32df4da8c4b
+  spec:
+    clusterIP: 10.217.5.64
+    clusterIPs:
+    - 10.217.5.64
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 8761
+      protocol: TCP
+      targetPort: 8761
+    selector:
+      app: discovery-server
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: petclinic
+      meta.helm.sh/release-namespace: petclinic
+    creationTimestamp: "2026-05-18T23:34:11Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    name: api-gateway
+    namespace: petclinic
+    resourceVersion: "82681"
+    uid: 73172614-1898-491e-9c33-18ed1a186f9f
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: api-gateway
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        labels:
+          app: api-gateway
+      spec:
+        containers:
+        - env:
+          - name: SPRING_CLOUD_CONFIG_FAIL_FAST
+            value: "false"
+          image: springcommunity/spring-petclinic-api-gateway:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: api-gateway
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 300m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 256Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-05-19T06:57:33Z"
+      lastUpdateTime: "2026-05-19T06:57:33Z"
+      message: ReplicaSet "api-gateway-d898dc5db" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2026-05-19T08:33:00Z"
+      lastUpdateTime: "2026-05-19T08:33:00Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: petclinic
+      meta.helm.sh/release-namespace: petclinic
+    creationTimestamp: "2026-05-18T23:34:11Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    name: config-server
+    namespace: petclinic
+    resourceVersion: "82675"
+    uid: 7358609c-a417-4de1-9ced-e3ee022ada3d
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: config-server
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        labels:
+          app: config-server
+      spec:
+        containers:
+        - env:
+          - name: SPRING_CLOUD_CONFIG_FAIL_FAST
+            value: "false"
+          image: springcommunity/spring-petclinic-config-server:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8888
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: config-server
+          ports:
+          - containerPort: 8888
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8888
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 300m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 256Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-05-19T06:56:23Z"
+      lastUpdateTime: "2026-05-19T06:56:23Z"
+      message: ReplicaSet "config-server-cb48cfc75" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2026-05-19T08:33:00Z"
+      lastUpdateTime: "2026-05-19T08:33:00Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: petclinic
+      meta.helm.sh/release-namespace: petclinic
+    creationTimestamp: "2026-05-18T23:34:11Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    name: customers-service
+    namespace: petclinic
+    resourceVersion: "82697"
+    uid: dd044fe4-836d-4b8e-aad2-d7acd77b80b6
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: customers-service
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        labels:
+          app: customers-service
+      spec:
+        containers:
+        - env:
+          - name: SPRING_CLOUD_CONFIG_FAIL_FAST
+            value: "false"
+          image: springcommunity/spring-petclinic-customers-service:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8081
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: customers-service
+          ports:
+          - containerPort: 8081
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8081
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 300m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 256Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-05-19T08:33:07Z"
+      lastUpdateTime: "2026-05-19T08:33:07Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2026-05-19T08:33:07Z"
+      lastUpdateTime: "2026-05-19T08:33:07Z"
+      message: ReplicaSet "customers-service-6678d59695" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: petclinic
+      meta.helm.sh/release-namespace: petclinic
+    creationTimestamp: "2026-05-18T23:34:11Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    name: discovery-server
+    namespace: petclinic
+    resourceVersion: "82638"
+    uid: 0f008f11-1951-4982-9994-52ad1a0b3134
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: discovery-server
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        labels:
+          app: discovery-server
+      spec:
+        containers:
+        - env:
+          - name: SPRING_CLOUD_CONFIG_FAIL_FAST
+            value: "false"
+          image: springcommunity/spring-petclinic-discovery-server:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8761
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: discovery-server
+          ports:
+          - containerPort: 8761
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8761
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 300m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 256Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-05-19T08:32:45Z"
+      lastUpdateTime: "2026-05-19T08:32:45Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2026-05-19T08:32:45Z"
+      lastUpdateTime: "2026-05-19T08:32:45Z"
+      message: ReplicaSet "discovery-server-5475649867" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: petclinic
+      meta.helm.sh/release-namespace: petclinic
+    creationTimestamp: "2026-05-18T23:34:11Z"
+    generation: 1
+    labels:
+      app: api-gateway
+      pod-template-hash: d898dc5db
+    name: api-gateway-d898dc5db
+    namespace: petclinic
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: api-gateway
+      uid: 73172614-1898-491e-9c33-18ed1a186f9f
+    resourceVersion: "82679"
+    uid: c72b2e8e-7fce-4730-bd7f-0711aa3f13e9
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: api-gateway
+        pod-template-hash: d898dc5db
+    template:
+      metadata:
+        labels:
+          app: api-gateway
+          pod-template-hash: d898dc5db
+      spec:
+        containers:
+        - env:
+          - name: SPRING_CLOUD_CONFIG_FAIL_FAST
+            value: "false"
+          image: springcommunity/spring-petclinic-api-gateway:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: api-gateway
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 300m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 256Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: petclinic
+      meta.helm.sh/release-namespace: petclinic
+    creationTimestamp: "2026-05-18T23:34:11Z"
+    generation: 1
+    labels:
+      app: config-server
+      pod-template-hash: cb48cfc75
+    name: config-server-cb48cfc75
+    namespace: petclinic
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: config-server
+      uid: 7358609c-a417-4de1-9ced-e3ee022ada3d
+    resourceVersion: "82674"
+    uid: abb83403-fbbe-4506-bb5a-a785a869eddb
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: config-server
+        pod-template-hash: cb48cfc75
+    template:
+      metadata:
+        labels:
+          app: config-server
+          pod-template-hash: cb48cfc75
+      spec:
+        containers:
+        - env:
+          - name: SPRING_CLOUD_CONFIG_FAIL_FAST
+            value: "false"
+          image: springcommunity/spring-petclinic-config-server:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8888
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: config-server
+          ports:
+          - containerPort: 8888
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8888
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 300m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 256Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: petclinic
+      meta.helm.sh/release-namespace: petclinic
+    creationTimestamp: "2026-05-18T23:34:11Z"
+    generation: 1
+    labels:
+      app: customers-service
+      pod-template-hash: 6678d59695
+    name: customers-service-6678d59695
+    namespace: petclinic
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: customers-service
+      uid: dd044fe4-836d-4b8e-aad2-d7acd77b80b6
+    resourceVersion: "82694"
+    uid: 70d5025e-b2c5-4b57-88a7-1443600f5c7c
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: customers-service
+        pod-template-hash: 6678d59695
+    template:
+      metadata:
+        labels:
+          app: customers-service
+          pod-template-hash: 6678d59695
+      spec:
+        containers:
+        - env:
+          - name: SPRING_CLOUD_CONFIG_FAIL_FAST
+            value: "false"
+          image: springcommunity/spring-petclinic-customers-service:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8081
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: customers-service
+          ports:
+          - containerPort: 8081
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8081
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 300m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 256Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+      meta.helm.sh/release-name: petclinic
+      meta.helm.sh/release-namespace: petclinic
+    creationTimestamp: "2026-05-18T23:34:11Z"
+    generation: 1
+    labels:
+      app: discovery-server
+      pod-template-hash: "5475649867"
+    name: discovery-server-5475649867
+    namespace: petclinic
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: discovery-server
+      uid: 0f008f11-1951-4982-9994-52ad1a0b3134
+    resourceVersion: "82636"
+    uid: 749dc70b-634a-45af-accb-fc75b5f19b5b
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: discovery-server
+        pod-template-hash: "5475649867"
+    template:
+      metadata:
+        labels:
+          app: discovery-server
+          pod-template-hash: "5475649867"
+      spec:
+        containers:
+        - env:
+          - name: SPRING_CLOUD_CONFIG_FAIL_FAST
+            value: "false"
+          image: springcommunity/spring-petclinic-discovery-server:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8761
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: discovery-server
+          ports:
+          - containerPort: 8761
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /actuator/health
+              port: 8761
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 300m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 256Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: petclinic
+      meta.helm.sh/release-namespace: petclinic
+      openshift.io/host.generated: "true"
+    creationTimestamp: "2026-05-18T23:34:11Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    name: api-gateway
+    namespace: petclinic
+    resourceVersion: "76057"
+    uid: 3ff7a7a6-3767-4a95-97f3-3b92ddc8fa34
+  spec:
+    host: api-gateway-petclinic.apps-crc.testing
+    port:
+      targetPort: 8080
+    to:
+      kind: Service
+      name: api-gateway
+      weight: 100
+    wildcardPolicy: None
+  status:
+    ingress:
+    - conditions:
+      - lastTransitionTime: "2026-05-18T23:34:11Z"
+        status: "True"
+        type: Admitted
+      host: api-gateway-petclinic.apps-crc.testing
+      routerCanonicalHostname: router-default.apps-crc.testing
+      routerName: default
+      wildcardPolicy: None
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    annotations:
+      openshift.io/host.generated: "true"
+    creationTimestamp: "2026-05-19T08:35:30Z"
+    generation: 1
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    name: discovery-server
+    namespace: petclinic
+    resourceVersion: "82935"
+    uid: 32bba3f6-c856-4876-960d-90a306314a6f
+  spec:
+    host: discovery-server-petclinic.apps-crc.testing
+    port:
+      targetPort: 8761
+    to:
+      kind: Service
+      name: discovery-server
+      weight: 100
+    wildcardPolicy: None
+  status:
+    ingress:
+    - conditions:
+      - lastTransitionTime: "2026-05-19T08:35:30Z"
+        status: "True"
+        type: Admitted
+      host: discovery-server-petclinic.apps-crc.testing
+      routerCanonicalHostname: router-default.apps-crc.testing
+      routerName: default
+      wildcardPolicy: None
+kind: List
+metadata:
+  resourceVersion: ""
