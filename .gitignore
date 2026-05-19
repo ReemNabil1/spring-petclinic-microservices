@@ -1,6 +1,11 @@
 # Maven
 target/
 !.mvn/wrapper/maven-wrapper.jar
+*.log
+*.tmp
+stable-working-state.yaml
+working-backup.yaml
+::.
 
 # Jenv
 .java-version
